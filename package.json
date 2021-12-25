@@ -1,0 +1,29 @@
+{
+  "name": "stanley-crawler-node",
+  "version": "0.1.1",
+  "description": "crawler puppeteer/playwright typescript template",
+  "main": "index.js",
+  "repository": "git@github.com:ODGodinho/Stanley-Crawler-node.git",
+  "author": "Dragons Gamers",
+  "license": "MIT",
+  "scripts": {
+    "prod": "tsc && node ./dist/index.js",
+    "debug": "tsc && set DEBUG=pw:api && node ./dist/index.js"
+  },
+  "devDependencies": {
+    "@types/node": "*",
+    "@typescript-eslint/eslint-plugin": "*",
+    "@typescript-eslint/parser": "*",
+    "eslint": "*",
+    "eslint-config-airbnb-base": "*",
+    "eslint-config-prettier": "*",
+    "eslint-import-resolver-typescript": "*",
+    "eslint-plugin-import": "*",
+    "eslint-plugin-prettier": "*",
+    "prettier": "*",
+    "typescript": "*"
+  },
+  "dependencies": {
+    "colors": "^1.4.0"
+  }
+}
