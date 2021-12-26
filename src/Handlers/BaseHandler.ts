@@ -1,6 +1,6 @@
-import Instances from '../../@types/Instances';
-import { PageContract } from '../../@types/Page';
-import SelectorsType from '../../@types/Selectors';
+import Instances from '../@types/Instances';
+import { PageContract } from '../@types/Page';
+import SelectorsType from '../@types/Selectors';
 import BasePage from '../Pages/BasePage';
 
 export enum HandlerState {

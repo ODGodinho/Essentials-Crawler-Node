@@ -1,7 +1,7 @@
 import { BrowserContextContract, BrowserContextOptionsContract } from './Context';
-/*§BrowserLaunchOptionImport§*/
+import { PageContract } from './Page';
 
-export interface BrowserLaunchOptionsContract /*§BrowserLaunchOptionExtends*/  {
+export interface BrowserLaunchOptionsContract  {
     /**
      * Additional arguments to pass to the browser instance. The list of Chromium flags can be found
      * [here](http://peter.sh/experiments/chromium-command-line-switches/).
@@ -79,13 +79,15 @@ export interface BrowserLaunchOptionsContract /*§BrowserLaunchOptionExtends*/  
     timeout?: number;
 }
 
-export interface BrowserTypeContract {
-    launch(options?: BrowserLaunchOptionsContract): Promise<BrowserContract | any>;
+export interface BrowserTypeContract<PageType extends PageContract> {
+    launch(options?: BrowserLaunchOptionsContract): Promise<BrowserContract<PageType> | any>;
 }
 
-export interface BrowserContract extends Browser {
+interface BrowserContractI<PageType extends PageContract> {
     close(): Promise<any>;
-    contexts(): Array<BrowserContextContract>;
-    newContext(options?: BrowserContextOptionsContract): Promise<BrowserContextContract>;
-    createIncognitoBrowserContext(): Promise<BrowserContextContract>;
-}
+    contexts(): Array<BrowserContextContract<PageType>>;
+    newContext?: (options?: BrowserContextOptionsContract) => Promise<BrowserContextContract<PageType>>;
+    createIncognitoBrowserContext?: () => Promise<BrowserContextContract<PageType>>;
+};
+
+export type BrowserContract<PageType extends PageContract> = BrowserContractI<PageType>;

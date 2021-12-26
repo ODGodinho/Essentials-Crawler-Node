@@ -1,6 +1,6 @@
-import Instances from '../../@types/Instances';
-import { PageContract } from '../../@types/Page';
-import SelectorsType from '../../@types/Selectors';
+import Instances from '../@types/Instances';
+import { PageContract } from '../@types/Page';
+import SelectorsType from '../@types/Selectors';
 import Selectors from '../Selectors/Selectors';
 
 abstract class BasePage<PageType extends PageContract> {
@@ -31,6 +31,12 @@ abstract class BasePage<PageType extends PageContract> {
         if (!this.instancesData) throw new Error("No instances data available");
 
         return this.instancesData;
+    }
+
+    public static async addInitScript(page: PageContract, script?: Function | string | { path?: string; content?: string; } | void, params: any = {}) {
+        if (!script) return;
+        const init = page.addInitScript;
+        return init.call(page, script, params);
     }
 }
 

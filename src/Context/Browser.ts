@@ -1,50 +1,53 @@
-import { BrowserContract, BrowserLaunchOptionsContract, BrowserTypeContract } from '../../@types/Browser';
-import { BrowserContextContract, BrowserContextOptionsContract } from '../../@types/Context';
-import { PageContract } from '../../@types/Page';
+import { BrowserContract, BrowserLaunchOptionsContract, BrowserTypeContract } from '../@types/Browser';
+import { BrowserContextContract, BrowserContextOptionsContract } from '../@types/Context';
+import { PageContract } from '../@types/Page';
+import PackagePlugin from '../Packages/PackagePlugin';
 import Context from './Context';
 
-class Browser<BrowserType extends BrowserTypeContract, PageType extends PageContract> {
+class Browser<BrowserType extends BrowserTypeContract<PageType>, PageType extends PageContract> {
 
     public readonly browserType: BrowserType;
 
-    public browser?: BrowserContract;
+    public browser?: BrowserContract<PageType>;
 
     public contexts: Array<Context<BrowserType, PageType>> = [];
 
+    public plugins: PackagePlugin[] = [];
+
     constructor(browserType: BrowserType) {
         this.browserType = browserType;
-
     }
 
-    private browserOptions(): BrowserLaunchOptionsContract {
+    protected browserOptions(): BrowserLaunchOptionsContract {
         return {
             headless: false,
             args: [
-                "--wm-window-animations-disabled",
-                "--no-sandbox",
-                "--disable-setuid-sandbox",
-                "--disable-infobars",
-                "--disable-blink-features=AutomationControlled",
             ],
         };
     }
 
-    async initBrowser() {
+    public async initBrowser() {
         this.browser = await this.browserType.launch(this.browserOptions());
     }
 
-    async newContext(options?: BrowserContextOptionsContract): Promise<Context<BrowserType, PageType>> {
+    public use(packages: Array<PackagePlugin>) {
+        return this.plugins.push(...packages);
+    }
+
+    public async newContext(options?: BrowserContextOptionsContract, context?: BrowserContextContract<PageType>): Promise<Context<BrowserType, PageType>> {
         if (!this.browser) throw new Error("Browser is not available");
 
         const contextFunction = this.browser?.newContext?.bind(this.browser)
             || this.browser?.createIncognitoBrowserContext?.bind(this.browser);
 
-        const context: BrowserContextContract<PageType> = await contextFunction(options);
-        const contextInstance = new Context(this, context);
+        if (!contextFunction) throw new Error("Context function is not available");
+
+        const contextI: BrowserContextContract<PageType> = context || await contextFunction(options);
+        const contextInstance = new Context(this, contextI);
 
         this.contexts.push(
             contextInstance
-        )
+        );
 
         return contextInstance;
     }

@@ -1,16 +1,15 @@
-import { BrowserContextOptions } from '§crawler-core§';
-import { BrowserContext } from '§crawler-core§';
+import { BrowserContract } from './Browser';
 import { PageContract } from './Page';
 
-export interface BrowserContextOptionsContract extends BrowserContextOptions {
+export interface BrowserContextOptionsContract {
 
 }
 
-export interface BrowserContextContract<PageType extends PageContract> extends BrowserContext {
+export interface BrowserContextContract<PageType extends PageContract> {
     /**
     * Returns the browser instance of the context. If it was launched as a persistent context null gets returned.
     */
-    browser(): null | BrowserContract;
+    browser(): null | BrowserContract<PageType>;
 
     /**
      * Creates a new page in the browser context.
@@ -21,5 +20,10 @@ export interface BrowserContextContract<PageType extends PageContract> extends B
      * Returns all open pages in the context.
      */
     pages(): Array<PageType>;
+
+    /**
+     * Context Events
+     */
+    on: Function;
 
 }

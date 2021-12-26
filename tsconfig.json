@@ -17,6 +17,11 @@
     "experimentalDecorators": true,
     "removeComments": true,
     "noImplicitAny": true,
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "declaration": true,
+  },
+  "include": [
+    "./src/"
+  ]
 }
