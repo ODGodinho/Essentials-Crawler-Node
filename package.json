@@ -1,5 +1,5 @@
 {
-  "name": "essentials-crawler-node",
+  "name": "@odg/essentials-crawler-node",
   "version": "0.1.0",
   "description": "crawler puppeteer/playwright typescript base",
   "main": "index.js",
