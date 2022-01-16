@@ -7,13 +7,13 @@ import Browser from './Browser';
 
 class Context<BrowserType extends BrowserTypeContract<PageContract>, PageType extends PageContract> {
 
-    public readonly browser: Browser<BrowserType, PageType>;
+    public readonly browser: Browser<BrowserType, PageType, typeof Context>;
 
     public readonly context: BrowserContextContract<PageType>;
 
     public plugins: PackagePluginInterface[] = [];
 
-    constructor(browser: Browser<BrowserType, PageType>, context: BrowserContextContract<PageType>) {
+    constructor(browser: Browser<BrowserType, PageType, typeof Context>, context: BrowserContextContract<PageType>) {
         this.browser = browser;
         this.context = context;
         this.onNewPageRegister(this.getContextPlugins());

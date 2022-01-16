@@ -1,12 +1,13 @@
 import { test, expect } from "@playwright/test";
 import { chromium } from 'playwright-core';
 import Browser from '../Context/Browser';
+import Context from '../Context/Context';
 import WebDriverFingerPrintPackage from '../Packages/WebDriverFingerPrintPackage';
 import { BrowserInterface, TestInterface } from './Type';
 // import { TestInterface } from './Type.d.tsss';
 
 test.describe('Web Driver Testes', () => {
-    const BrowserInstance = new Browser(chromium);
+    const BrowserInstance = new Browser(chromium, Context);
 
     test.beforeAll(async ({ browser }: BrowserInterface) => {
         BrowserInstance.browser = browser;

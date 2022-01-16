@@ -4,18 +4,21 @@ import { PageContract } from '../@types/Page';
 import PackagePlugin from '../Packages/PackagePlugin';
 import Context from './Context';
 
-class Browser<BrowserType extends BrowserTypeContract<PageType>, PageType extends PageContract> {
+class Browser<BrowserType extends BrowserTypeContract<PageType>, PageType extends PageContract, ContextType extends typeof Context> {
 
     public readonly browserType: BrowserType;
 
-    public browser?: BrowserContract<PageType>;
+    public browser?: BrowserContract<PageType> | null;
 
     public contexts: Array<Context<BrowserType, PageType>> = [];
 
     public plugins: PackagePlugin[] = [];
 
-    constructor(browserType: BrowserType) {
+    public readonly contextType: ContextType;
+
+    constructor(browserType: BrowserType, contextType: ContextType) {
         this.browserType = browserType;
+        this.contextType = contextType;
     }
 
     protected browserOptions(): BrowserLaunchOptionsContract {
@@ -35,15 +38,16 @@ class Browser<BrowserType extends BrowserTypeContract<PageType>, PageType extend
     }
 
     public async newContext(options?: BrowserContextOptionsContract, context?: BrowserContextContract<PageType>): Promise<Context<BrowserType, PageType>> {
-        if (!this.browser) throw new Error("Browser is not available");
-
         const contextFunction = this.browser?.newContext?.bind(this.browser)
             || this.browser?.createIncognitoBrowserContext?.bind(this.browser);
 
-        if (!contextFunction) throw new Error("Context function is not available");
+        if (!context && !contextFunction) throw new Error("Context function/param is not available");
 
-        const contextI: BrowserContextContract<PageType> = context || await contextFunction(options);
-        const contextInstance = new Context(this, contextI);
+        const contextI = context || await contextFunction?.(options)
+
+        if (!contextI) throw new Error("Context is invalid");
+
+        const contextInstance = new this.contextType<BrowserType, PageType>(this, contextI);
 
         this.contexts.push(
             contextInstance
