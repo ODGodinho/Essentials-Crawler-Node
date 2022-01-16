@@ -1,7 +1,7 @@
 export interface PageContract {
-    addInitScript: Function,
-    goBack: Function,
-    evaluate: Function,
-    goto: Function,
-    context: Function,
+    addInitScript: Function | any,
+    goBack: Function | any,
+    evaluate: Function | any,
+    goto: Function | any,
+    context: Function | any,
 }

@@ -1,6 +1,6 @@
 {
   "name": "@odg/essentials-crawler-node",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "crawler puppeteer/playwright typescript base",
   "main": "index.js",
   "repository": "git@github.com:ODGodinho/Essentials-Crawler-Node.git",
@@ -9,7 +9,8 @@
   "scripts": {
     "build": "rm -rf ./dist/ && tsc && copyfiles package.json ./dist/",
     "prod": "node ./dist/index.js",
-    "debug": "tsc && set DEBUG=pw:api && node ./dist/index.js"
+    "debug": "tsc && set DEBUG=pw:api && node ./dist/index.js",
+    "publish": "yarn build && cd ./dist/ && npm publish --access public"
   },
   "devDependencies": {
     "@playwright/test": "^1.17.1",

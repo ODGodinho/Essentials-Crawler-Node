@@ -85,7 +85,7 @@ export interface BrowserTypeContract<PageType extends PageContract> {
 
 interface BrowserContractI<PageType extends PageContract> {
     close(): Promise<any>;
-    contexts(): Array<BrowserContextContract<PageType>>;
+    contexts?: () => Array<BrowserContextContract<PageType>>;
     newContext?: (options?: BrowserContextOptionsContract) => Promise<BrowserContextContract<PageType>>;
     createIncognitoBrowserContext?: () => Promise<BrowserContextContract<PageType>>;
 };
